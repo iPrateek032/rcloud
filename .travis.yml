@@ -28,7 +28,7 @@ before_install:
 - sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs
 - casperjs --version
 - sudo apt-get install python-dev
-- cd /home/travis/build/att/rcloud
+- cd /home/travis/build/iprateek032/rcloud
 - chmod 755 ./tests/Run.sh
 - chmod 755 ./tests/Reports
 - chmod 755 ./tests/*
@@ -39,9 +39,9 @@ install:
 - ./scripts/build.sh
 - sudo pip install ipython==2.4.1
 - sudo pip install pyzmq
-- cd /home/travis/build/att/rcloud/conf/solr
-- ./solrsetup.sh /home/travis/build/att/rcloud/services/
-- cd /home/travis/build/att/rcloud/
+- cd /home/travis/build/iprateek032/rcloud/conf/solr
+- ./solrsetup.sh /home/travis/build/iprateek032/rcloud/services/
+- cd /home/travis/build/iprateek032/rcloud/
 script:
 - ./scripts/fresh_start.sh
 - ./tests/Run.sh $TESTFOLDER
