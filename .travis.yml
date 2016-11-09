@@ -28,6 +28,9 @@ before_install:
 - sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs
 - casperjs --version
 - sudo apt-get install python-dev
+- pwd
+- cd
+- pwd
 - cd /home/travis/build/iprateek032/rcloud
 - chmod 755 ./tests/Run.sh
 - chmod 755 ./tests/Reports
