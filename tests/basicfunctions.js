@@ -74,11 +74,11 @@ exports.create_notebook = function (casper) {
 exports.validation = function (casper) {
     return casper
         .wait(5000, function () {
-            this.wait(5000);
+            this.wait(8000);
             this.waitForSelector('.icon-share', function () {
                 this.test.assertExists('.icon-share', 'the element Shareable Link exists');
             });
-            this.wait(5000);
+            this.wait(8000);
             this.waitForSelector('div.btn > input:nth-child(1)', function () {
                 this.test.assertVisible("#rcloud-navbar-menu > li:nth-child(7) > a:nth-child(1)", 'Cell delete check box exists');
             });
