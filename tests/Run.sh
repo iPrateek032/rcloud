@@ -19,7 +19,7 @@ cd /home/travis/build/iPrateek032/rcloud/tests
 pwd
 echo "Executing testscripts from $1"
 # sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=RCloudatt --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
-sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs advanced_dropdown_option/*.js --username=RCloudatt --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
+sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs 2-3Test/*.js --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
 
 echo -e "Starting to update AUTO_IMG\n"
 # change directory to Travis Home
