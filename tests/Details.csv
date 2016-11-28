@@ -1,6 +1,6 @@
  sulemaga@mail.com,musigma12,advanced_dropdown_option,FALSE
 ,,anonymous_user,FALSE
-,,asset,FALSE
+,,asset,TRUE
 ,,cell_numbers,FALSE
 ,,cell_status,FALSE
 ,,comments,FALSE
@@ -21,7 +21,7 @@
 ,,notebook_folder,FALSE
 ,,notebook_info,FALSE
 ,,notebook_renaming,FALSE
-,,private_group,TRUE
+,,private_group,FALSE
 ,,private_group,FALSE
 ,,python_cells,FALSE
 ,,r_cells,FALSE
