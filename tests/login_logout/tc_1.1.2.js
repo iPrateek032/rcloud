@@ -18,7 +18,7 @@ casper.test.begin("Login to Main page (user is not logged-in to the Github accou
         functions.inject_jquery(casper);
     });
 
-    casper.viewport(1024, 768).then(function () {
+    casper.wait(2000).viewport(1024, 768).then(function () {
         functions.login(casper, github_username, github_password, rcloud_url);
     });
 
