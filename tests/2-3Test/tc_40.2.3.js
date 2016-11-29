@@ -12,12 +12,10 @@ casper.test.begin("Verifying the disappearance of popover for other than selecte
     var github_password = casper.cli.options.password;
     var rcloud_url = casper.cli.options.url;
     var functions = require(fs.absolute('basicfunctions'));
-    var title;
-    var initial_title;
-    var v;
-
+    var title, initial_title, v;
+    
     casper.start(rcloud_url, function () {
-        casper.page.injectJs('jquery-1.10.2.js');
+        functions.inject_jquery(casper);
     });
     casper.wait(10000);
 
