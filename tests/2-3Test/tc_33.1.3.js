@@ -26,7 +26,7 @@ casper.test.begin("After reloading the page workspace div doesn't contain Datafr
         functions.login(casper, github_username, github_password, rcloud_url);
     });
 
-    casper.viewport(1024, 768).then(function () {
+    casper.wait(9000).viewport(1024, 768).then(function () {
         this.wait(9000);
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
