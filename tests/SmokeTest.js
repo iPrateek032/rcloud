@@ -35,6 +35,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     casper.then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
         functions.validation(casper);
+         this.capture("./Images/33.1.2.png");
     });
 
     //creating new notebok
