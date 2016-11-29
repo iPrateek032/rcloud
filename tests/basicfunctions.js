@@ -75,7 +75,7 @@ exports.validation = function (casper) {
     return casper
         .wait(5000, function () {
             this.wait(8000);
-            this.waitForSelector('.icon-share', function () {
+            this.waitUntilVisible('.icon-share', function () {
                 this.test.assertExists('.icon-share', 'the element Shareable Link exists');
             });
             this.wait(8000);
