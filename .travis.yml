@@ -1,5 +1,5 @@
 addons:
-  firefox: '48.0'
+  firefox: '50.0'
 language: c
 node_js:
   - '0.12'
@@ -28,6 +28,7 @@ before_install:
 - sudo ln -sf `pwd`/bin/casperjs /usr/local/bin/casperjs
 - casperjs --version
 - sudo apt-get install python-dev
+- sudo apt-get update
 - cd /home/travis/build/iPrateek032/rcloud
 - chmod 755 ./tests/Run.sh
 - chmod 755 ./tests/Reports
