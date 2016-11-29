@@ -27,6 +27,7 @@ casper.test.begin("Check the occurrence of popover when the 'notebook info' opti
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
         this.wait(4000);
+        this.capture("./Images/40.1.2.png");
     });
     
     //create a new notebook

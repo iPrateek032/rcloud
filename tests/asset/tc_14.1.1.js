@@ -17,6 +17,7 @@ casper.test.begin("View contents of uploaded file in Assets div", 4, function su
     var curFilePath = fs.absolute(currentFile);
     var curFilePath = curFilePath.replace(currentFile, '');
     fileName = curFilePath + fileName;
+    casper.options.waitTimeout = 20000;
 
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);

@@ -26,7 +26,7 @@ casper.test.begin("Notebook info icon", 6, function suite(test) {
         this.wait(9000);
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
-
+        this.capture("./Images/40.1.1.png");
     });
 
     //Create a new Notebook.
