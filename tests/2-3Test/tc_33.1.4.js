@@ -32,6 +32,7 @@ casper.test.begin("Checking whether existing dataframe is replaced with new data
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
         this.wait(4000);
+        this.capture("./Images/33.1.4.png");
     });
 
 	//Creating new notebook
