@@ -32,6 +32,7 @@ casper.test.begin("Display updated variable value in dataframe div", 7, function
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
         this.wait(4000);
+        this.capture("./Images/33.1.2.png");
     });
 
 	//Creating new notebook

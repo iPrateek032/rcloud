@@ -31,6 +31,7 @@ casper.test.begin("Checking whether scroll bar exist for the generated data fram
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
         this.wait(4000);
+        this.capture("./Images/33.1.5.png");
     });
 	
 	//Creating new notebook

@@ -35,13 +35,15 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
                     this.click({type: 'css', path: "input.btn"});
                 });
 
-                casper.viewport(1366, 768).then(function () {
+                casper.wait(5000).viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
-                        this.click(".btn");
-                        console.log("Github Authorization completed");
+                        this.waitForSelector(".btn", function(){
+                            this.click(".btn");
+                            console.log("Github Authorization completed");
+                        });
                     }
                     else {
-                        casper.viewport(1366, 768).then(function () {
+                        casper.wait(5000).viewport(1366, 768).then(function () {
                             this.wait(8000);
                             this.echo("The page title: " + this.getTitle());
                             console.log("RCloud Home page loaded");
