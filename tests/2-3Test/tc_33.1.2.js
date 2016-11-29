@@ -27,7 +27,7 @@ casper.test.begin("Display updated variable value in dataframe div", 7, function
         functions.login(casper, github_username, github_password, rcloud_url);
     });
 
-    casper.viewport(1024, 768).then(function () {
+    casper.wait(9000).viewport(1024, 768).then(function () {
         this.wait(9000);
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
