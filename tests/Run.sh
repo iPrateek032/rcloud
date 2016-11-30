@@ -26,17 +26,12 @@ echo -e "Starting to update AUTO_IMG\n"
 cd $Home
 
 #Making a new directory in travis home and open it
-echo -e "Creating Images folder\n"
 mkdir Images
 sudo chmod 777 Images
-echo -e "Opening Images floder\n"
 cd Images
-pwd
 
 #copying file/directory from /home/travis/build/iPrateek032/rcloud/tests to the newly created Images directory
-echo -e "copying file/directory from /home/travis/build/iPrateek032/rcloud/tests to the newly created Images directory\n"
 cp -R /home/travis/build/iPrateek032/rcloud/tests/Images/*.png $HOME/Images/
-ls
 sudo chmod 777 *
 
 #go to travis home directory and configure git
