@@ -35,14 +35,13 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
                     this.click({type: 'css', path: "input.btn"});
                 });
 
-                casper.wait(5000).viewport(1366, 768).then(function () {
+                casper.viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
-                        this.waitForSelector(".btn", function(){
-                            this.test.assertExists({type: 'xpath', path: ".//*[@id='js-pjax-container']/div[1]/div/div[2]/div/div[1]/form/p/button"}, 'Clicking on authorize button');
-                        });
+                        this.click(".btn");
+                        console.log("Github Authorization completed");
                     }
                     else {
-                        casper.wait(5000).viewport(1366, 768).then(function () {
+                        casper.viewport(1366, 768).then(function () {
                             this.wait(8000);
                             this.echo("The page title: " + this.getTitle());
                             console.log("RCloud Home page loaded");
@@ -75,11 +74,11 @@ exports.create_notebook = function (casper) {
 exports.validation = function (casper) {
     return casper
         .wait(5000, function () {
-            this.wait(8000);
-            this.waitUntilVisible('.icon-share', function () {
+            this.wait(5000);
+            this.waitForSelector('.icon-share', function () {
                 this.test.assertExists('.icon-share', 'the element Shareable Link exists');
             });
-            this.wait(8000);
+            this.wait(5000);
             this.waitForSelector('div.btn > input:nth-child(1)', function () {
                 this.test.assertVisible("#rcloud-navbar-menu > li:nth-child(7) > a:nth-child(1)", 'Cell delete check box exists');
             });
@@ -163,7 +162,7 @@ exports.fork = function (casper) {
         .then(function () {
             this.test.assertExists({type: 'css', path: '.icon-code-fork'}, 'Fork option exists');
             this.test.assertTruthy(this.click({type: 'css', path: '.icon-code-fork'}), 'Fork option clicked');
-            this.wait(12000);
+            this.wait(9000);
         });
 };
 
@@ -181,7 +180,7 @@ exports.delete_notebooksIstarred = function (casper) {
     return casper
         .then(function () {
             this.then(function () {
-                this.mouse.move('.jqtree-selected > div:nth-child(1) > span:nth-child(1)');
+                this.mouse.move('.jqtree-selected > div:nth-child(1)');
                 this.waitUntilVisible('.jqtree-selected > div:nth-child(1) > span:nth-child(2) > span:nth-child(3) > span:nth-child(1) > span:nth-child(5) > i:nth-child(1)', function () {
                     this.click('.jqtree-selected > div:nth-child(1) > span:nth-child(2) > span:nth-child(3) > span:nth-child(1) > span:nth-child(5) > i:nth-child(1)');
                 });
