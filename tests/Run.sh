@@ -31,13 +31,13 @@ mkdir Images
 sudo chmod 777 Images
 echo -e "Opening Images floder\n"
 cd Images
-sudo chmod 777
 pwd
 
 #copying file/directory from /home/travis/build/iPrateek032/rcloud/tests to the newly created Images directory
 echo -e "copying file/directory from /home/travis/build/iPrateek032/rcloud/tests to the newly created Images directory\n"
-cp -R /home/travis/build/iPrateek032/rcloud/tests/*.png $HOME/Images/
+cp -R /home/travis/build/iPrateek032/rcloud/tests/Images/*.png $HOME/Images/
 ls
+sudo chmod 777 *
 
 #go to travis home directory and configure git
 cd $HOME
@@ -51,8 +51,7 @@ git clone --quiet --branch=AUTO_IMG https://${GH_TOKEN}@github.com/iPrateek032/r
 #Go the the newly cloned branch(AUTO_IMG)
 cd AUTO_IMG
 #Now copy the images from Travis home directory to the newly cloned branch directory
-echo -e "Now copy the images from Travis home directory to the newly cloned branch directory\n"
-sudo cp -Rf $HOME/Images/* ./Images/
+cp -Rf $HOME/Images/* ./tests/Images/
 
 #add, commit and push files to the cloned branch (eg: "AUTO_IMG" branch)
 git add -f .
