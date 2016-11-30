@@ -27,10 +27,11 @@ cd $Home
 
 #Making a new directory in travis home and open it
 mkdir Images
+sudo chmod 777 Images
 cd Images
 
 #copying file/directory from /home/travis/build/iPrateek032/rcloud/tests to the newly created Images directory
-sudo cp -R /home/travis/build/iPrateek032/rcloud/tests/*.png $HOME/Images/
+cp -R /home/travis/build/iPrateek032/rcloud/tests/*.png $HOME/Images/
 
 #go to travis home directory and configure git
 cd $HOME
@@ -44,7 +45,7 @@ git clone --quiet --branch=AUTO_IMG https://${GH_TOKEN}@github.com/iPrateek032/r
 #Go the the newly cloned branch(AUTO_IMG)
 cd AUTO_IMG
 #Now copy the images from Travis home directory to the newly cloned branch directory
-sudo cp -Rf $HOME/Images/* ./tests/Images/
+cp -Rf $HOME/Images/* ./tests/Images/
 
 #add, commit and push files to the cloned branch (eg: "AUTO_IMG" branch)
 git add -f .
