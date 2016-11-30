@@ -37,7 +37,6 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
 
                 casper.wait(5000).viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
-                        console.log("Github Authorization page opened");
                         this.waitForSelector(".btn", function(){
                             this.test.assertExists({type: 'xpath', path: ".//*[@id='js-pjax-container']/div[1]/div/div[2]/div/div[1]/form/p/button"}, 'Clicking on authorize button');
                         });
