@@ -3,8 +3,8 @@ echo "Current directory:"
 rm -f conf/rcloud.conf
 echo "Host: 127.0.0.1" >> conf/rcloud.conf
 echo "Session.server: http://127.0.0.1:4301" >> conf/rcloud.conf
-echo "github.client.id: 5ea1e57ba1036737b488" >> conf/rcloud.conf
-echo "github.client.secret: c99a68ce73fb469ccc3c1ee1a3c57340aff93adb" >> conf/rcloud.conf
+echo "github.client.id: 5b46f7cb315d069df2f8" >> conf/rcloud.conf
+echo "github.client.secret: 6fd71711c74e22f1090f051f3ced5e8f91432644" >> conf/rcloud.conf
 echo "github.base.url: https://github.com/" >> conf/rcloud.conf
 echo "github.api.url: https://api.github.com/" >> conf/rcloud.conf
 echo "github.gist.url: https://gist.github.com/" >> conf/rcloud.conf

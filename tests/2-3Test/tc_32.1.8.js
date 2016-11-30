@@ -30,6 +30,7 @@ casper.test.begin("Display all variables in workspace div", 6, function suite(te
         console.log("validating that the Main page has got loaded properly by detecting if some of its elements are visible. Here we are checking for Shareable Link and Logout options");
         functions.validation(casper);
         this.wait(4000);
+	this.capture("./Images/32.1.8.png");
     });
     
     casper.then(function(){
