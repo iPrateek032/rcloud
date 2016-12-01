@@ -26,7 +26,6 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
         .then(function () {
             this.wait(8000);
             if (casper.getTitle().match(/GitHub/)) {
-
                 casper.viewport(1366, 768).then(function () {
                     this.test.assertTitleMatch(/GitHub/, "Github page has been loaded");
                     console.log("Login into GitHub with supplied username and password");
@@ -34,10 +33,9 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
                     this.sendKeys('#password', github_password);
                     this.click({type: 'css', path: "input.btn"});
                 });
-
                 casper.viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
-                        this.mouse.click(".btn");
+                        this.click(".btn");
                         console.log("Github Authorization completed");
                     }
                     else {
@@ -57,6 +55,7 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
             }
         });
 }
+
 
 //create a new notebook
 exports.create_notebook = function (casper) {
