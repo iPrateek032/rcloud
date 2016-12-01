@@ -280,6 +280,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
 
         //Selecting desired file from the directory
         casper.then(function () {
+             this.capture("./Images/import_Rmd_File.png");
             this.evaluate(function (fileName1) {
                 __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
             }, {fileName1: fileName1});
@@ -292,6 +293,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
 
 
     casper.wait(2000).then(function () {
+        this.capture("./Images/import_Rmd_File1.png");
         this.click("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)");
         console.log("Clicking on import button")
         this.wait(3000);
