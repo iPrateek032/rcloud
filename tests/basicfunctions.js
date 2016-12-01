@@ -37,7 +37,7 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
 
                 casper.viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
-                        this.click(".btn");
+                        this.mouse.click(".btn");
                         console.log("Github Authorization completed");
                     }
                     else {
