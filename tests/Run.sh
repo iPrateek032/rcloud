@@ -8,13 +8,16 @@ cd /home/travis/build/iPrateek032/rcloud/services
 sudo sed -i -e '2iROOT=/home/travis/build/iPrateek032/rcloud\' rcloud-sks
 sudo sh rcloud-sks &
 
-Rscript -e 'chooseCRANmirror(ind=81)'
-Rscript -e 'install.packages("XML", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
-Rscript -e 'install.packages("rcloud.dcplot", repos="http://rforge.net")'
-Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
-Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
+# Rscript -e 'chooseCRANmirror(ind=81)'
+# Rscript -e 'install.packages("XML", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
+# Rscript -e 'install.packages("rcloud.dcplot", repos="http://rforge.net")'
+# Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
+# Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
+# Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
+# Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
+Rscript -e R_dependencies.R
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
