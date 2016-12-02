@@ -288,6 +288,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
 
         //Selecting desired file from the directory
         casper.then(function () {
+            this.wait(5000);
             this.capture("./Images/import_Rmd_File.png");
             this.evaluate(function (fileName1) {
                 __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
