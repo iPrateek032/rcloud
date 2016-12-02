@@ -269,7 +269,9 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
 
     //Importing Rmarkdown file from the system
     casper.then(function () {
-        casper.wait(2000).then(function () {
+        this.thenOpen(URL);
+        this.wait(5000);
+        casper.wait(3000).then(function () {
         //Opening advanced dropdown option
         casper.then(function () {
             functions.open_advanceddiv(casper);

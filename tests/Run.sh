@@ -21,7 +21,7 @@ Rscript -e 'devtools::install_github("att/rcloud.shiny")'
 Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
-Rscript -e R_dependencies.R
+Rscript R_dependencies.R
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
