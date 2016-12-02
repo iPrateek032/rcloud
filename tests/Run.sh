@@ -1,3 +1,8 @@
+#go to travis home directory and configure git
+cd $HOME
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "travis"
+
 #Session Key Server Setup
 cd services
 git clone https://github.com/s-u/SessionKeyServer.git
