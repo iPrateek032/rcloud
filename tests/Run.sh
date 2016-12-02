@@ -1,8 +1,3 @@
-#go to travis home directory and configure git
-cd $HOME
-git config --global user.email "travis@travis-ci.org"
-git config --global user.name "travis"
-
 #Session Key Server Setup
 cd services
 git clone https://github.com/s-u/SessionKeyServer.git
@@ -26,7 +21,7 @@ Rscript -e 'devtools::install_github("att/rcloud.shiny")'
 Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
-Rscript R_dependencies.R
+Rscript -e R_dependencies.R
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
