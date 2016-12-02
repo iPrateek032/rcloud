@@ -9,13 +9,19 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
 
     var fileName = "SampleFiles/PHONE.csv";
+    var system = require('system');
+    var currentFile = require('system').args[4];
+    var curFilePath = fs.absolute(currentFile);
+    var curFilePath = curFilePath.replace(currentFile, '');
+    fileName = curFilePath + fileName;
+
     var fileName1 = 'SampleFiles/waste-lands.Rmd'; // File path directory
     var title = "Waste Lands";//title of the notebook
     var system = require('system');
     var currentFile = require('system').args[4];
     var curFilePath = fs.absolute(currentFile);
     var curFilePath = curFilePath.replace(currentFile, '');
-    fileName = curFilePath + fileName;
+    fileName1 = curFilePath + fileName1;
 
     //Notebook paths to check for sharable links
     var Notebook_R = 'http://127.0.0.1:8080/notebook.R/564af357b532422620a6';
@@ -282,7 +288,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
 
         //Selecting desired file from the directory
         casper.then(function () {
-             this.capture("./Images/import_Rmd_File.png");
+            this.capture("./Images/import_Rmd_File.png");
             this.evaluate(function (fileName1) {
                 __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
             }, {fileName1: fileName1});
