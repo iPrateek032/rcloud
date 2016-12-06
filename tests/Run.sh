@@ -15,8 +15,8 @@ Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
 Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
 Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
 Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
-Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
-Rscript -e 'devtools::install_github("att/rcloud.rmd")'
+# Rscript -e 'devtools::install_github("att/rcloud.rmd")'
+devtools::install_github('att/rcloud.rmd', repos=c("http://RForge.net", "http://R.research.att.com"), type="source")
 Rscript -e 'devtools::install_github("att/rcloud.shiny")'
 Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
 
@@ -25,7 +25,7 @@ Rscript -e R_dependencies.R
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
-sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=RCloudatt --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
+sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
 # sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs 2-3Test/*.js --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
 
 echo -e "Starting to update AUTO_IMG\n"
