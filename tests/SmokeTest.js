@@ -7,8 +7,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var functions = require(fs.absolute('basicfunctions.js'));//invoke the common functions present in basicfunctions.js
     var notebook_id = '60cf414db458dae177addac8d48d4dea';//Notebook which consists all the cells like "R, Python, Markdown, Shell"
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
-
-    //Uploading to assets
+    
     var fileName = "SampleFiles/PHONE.csv";
     var system = require('system');
     var currentFile = require('system').args[4];
@@ -16,7 +15,6 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var curFilePath = curFilePath.replace(currentFile, '');
     fileName = curFilePath + fileName;
 
-    //file for importing Rmarkdown
     var fileName1 = 'SampleFiles/waste-lands.Rmd'; // File path directory
     var title = "Waste Lands";//title of the notebook
     var system = require('system');
@@ -45,7 +43,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     casper.then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
         functions.validation(casper);
-        this.capture("./Images/capture.png");
+         this.capture("./Images/capture.png");
     });
 
     //creating new notebok
@@ -280,81 +278,70 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         this.thenOpen(URL);
         this.wait(5000);
         casper.wait(3000).then(function () {
-
-            //Opening advanced dropdown option
-            casper.then(function () {
-                functions.open_advanceddiv(casper);
-                if (this.test.assertVisible("#rmdImport")) {
-                    console.log("Import Rmarkdown file option is prsesent");
-                    this.click("#rmdImport");
-                    console.log("Clicking on import Rmarkdown file option form the dropdown");
-                    this.wait(5000);
-
-                    if (this.test.assertVisible("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1)")) {
-
-                        //Selecting desired file from the directory
-                        casper.then(function () {
-                            this.wait(5000);
-                            this.capture("./Images/import_Rmd_File.png");
-                            this.evaluate(function (fileName1) {
-                                __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
-                            }, {fileName1: fileName1});
-                            this.page.uploadFile('input[id="notebook-file-upload"]', fileName1);
-                            console.log('Selecting a file');
-                        });
-
-                        casper.wait(2000).then(function () {
-                            this.capture("./Images/import_Rmd_File1.png");
-                            // this.click("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)");
-                            casper.click(x('//*[text()="Import"]'));
-                            console.log("Clicking on import button")
-                            this.wait(3000);
-                        });
-                        casper.then(function () {
-                            this.thenOpen(URL);
-                            this.wait(8000);
-                        });
-
-                        casper.then(function () {
-                            flag = 0;//to check if notebook has been found
-                            var counter = 0;//counts the number of notebooks
-                            do
-                            {
-                                counter = counter + 1;
-
-                            } while (this.visible("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + counter + ") > div:nth-child(1) > span:nth-child(1)"));
-                            counter = counter + 1;
-                            for (v = 1; v <= counter; v++) {
-                                this.wait(2000);
-                                fetchTitle = this.fetchText("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + v + ") > div:nth-child(1) > span:nth-child(1)");
-                                if (fetchTitle == title) {
-                                    flag = 1;
-                                    break;
-                                }
-                            }//for closes
-                            this.test.assertEquals(flag, 1, "Located the imported Rmarkdown notebook");
-                        });
-
-                        casper.then(function () {
-                            if (flag == 1) {
-                                this.test.assertEquals(flag, 1, "Import Notebook from File, Notebook with title " + title + " is PRESENT under Notebooks tree");
-                            }
-                            else {
-                                this.test.assertEquals(flag, 0, "Import Notebook from File, Notebook with title " + title + " is ABSENT under Notebooks tree");
-                            }
-                        });
-
-                    }
-                    else {
-                        console.log("Modal window is not opening")
-                    }
-                }
-                else {
-                    console.log("Import Rmarkdown file option is not visible");
-                }
-            });
-            casper.wait(5000);
+        //Opening advanced dropdown option
+        casper.then(function () {
+            functions.open_advanceddiv(casper);
+            this.click("#rmdImport");
+            console.log("Clicking on import Rmarkdown file option form the dropdown");
+            this.wait(3000);
         });
+
+        //Selecting desired file from the directory
+        casper.then(function () {
+            this.wait(5000);
+            this.capture("./Images/import_Rmd_File.png");
+            this.evaluate(function (fileName1) {
+                __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
+            }, {fileName1: fileName1});
+            this.page.uploadFile('input[id="notebook-file-upload"]', fileName1);
+            console.log('Selecting a file');
+        });
+
+        casper.wait(5000);
+    });
+
+
+    casper.wait(2000).then(function () {
+        this.capture("./Images/import_Rmd_File1.png");
+        // this.click("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)");
+        casper.click(x('//*[text()="Import"]'));
+        console.log("Clicking on import button")
+        this.wait(3000);
+    });
+
+    casper.then(function (){
+        this.thenOpen(URL);
+        this.wait(8000);
+    });
+
+    casper.then(function (){
+        flag = 0;//to check if notebook has been found
+        var counter = 0;//counts the number of notebooks
+        do
+        {
+            counter = counter + 1;
+            
+        } while (this.visible("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child("+ counter +") > div:nth-child(1) > span:nth-child(1)"));
+        counter = counter + 1;
+        for (v = 1; v <= counter; v++) {
+            this.wait(2000);
+            fetchTitle = this.fetchText("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child("+ v +") > div:nth-child(1) > span:nth-child(1)");
+            if (fetchTitle == title) {
+                flag = 1;
+                break;
+            }
+        }//for closes
+        this.test.assertEquals(flag, 1, "Located the imported Rmarkdown notebook");        
+    });
+
+    casper.then(function(){
+        if (flag == 1) {
+            this.test.assertEquals(flag, 1, "Import Notebook from File, Notebook with title " + title + " is PRESENT under Notebooks tree");
+        }
+        else {
+            this.test.assertEquals(flag, 0, "Import Notebook from File, Notebook with title " + title + " is ABSENT under Notebooks tree");
+        }
+    });
     });
 
     //Checking for Fork feature

@@ -131,6 +131,7 @@ exports.addnewcell = function (casper) {
 exports.addcontentstocell = function (casper, input_code) {
     return casper
         .then(function () {
+            this.wait(2000);
             if (this.visible("div.edit-code > div:nth-child(3) > div:nth-child(1)")) {
                 this.test.pass('The cell is present');
                 console.log('Adding contents to the cell')
