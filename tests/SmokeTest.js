@@ -15,8 +15,8 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     // var curFilePath = curFilePath.replace(currentFile, '');
     // fileName = curFilePath + fileName;
 
-    var fileName = 'SampleFiles/waste-lands.Rmd'; // File path directory
-    var title = "Waste Lands";//title of the notebook
+    var fileName = 'SampleFiles/html_widgets.Rmd'; // File path directory
+    var title = "HTML Widgets Showcase";//title of the notebook
     var system = require('system');
     var currentFile = require('system').args[4];
     var curFilePath = fs.absolute(currentFile);
