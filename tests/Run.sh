@@ -21,7 +21,6 @@ Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
 Rscript -e R_dependencies.R
-#sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
 sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
