@@ -15,8 +15,7 @@ Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
 Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
 Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
 Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
-# Rscript -e 'devtools::install_github("att/rcloud.rmd")'
-devtools::install_github('att/rcloud.rmd', repos=c("http://RForge.net", "http://R.research.att.com"), type="source")
+Rscript -e 'devtools::install_github("att/rcloud.rmd")'
 Rscript -e 'devtools::install_github("att/rcloud.shiny")'
 Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
 
