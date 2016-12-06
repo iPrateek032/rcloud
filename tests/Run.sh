@@ -8,7 +8,7 @@ cd /home/travis/build/iPrateek032/rcloud/services
 sudo sed -i -e '2iROOT=/home/travis/build/iPrateek032/rcloud\' rcloud-sks
 sudo sh rcloud-sks &
 
-sudo apt-get install libssl-dev
+sudo apt-get install build-essential libcurl4-gnutls-dev libxml2-dev libssl-dev
 
 Rscript -e 'chooseCRANmirror(ind=81)'
 Rscript -e 'install.packages("XML", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
