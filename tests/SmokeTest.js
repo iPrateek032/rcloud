@@ -276,7 +276,10 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     });
 
     //Importing Rmarkdown file from the system
+<<<<<<< HEAD
     
+=======
+>>>>>>> 04d09796e3ae374eec65ccb554435ea498bf0059
     casper.then(function () {
         this.thenOpen(URL);
         this.wait(5000);
