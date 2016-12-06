@@ -284,13 +284,13 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             //Opening advanced dropdown option
             casper.then(function () {
                 functions.open_advanceddiv(casper);
-                if (this.assertVisible("#rmdImport")) {
+                if (this.test.assertVisible("#rmdImport")) {
                     console.log("Import Rmarkdown file option is prsesent");
                     this.click("#rmdImport");
                     console.log("Clicking on import Rmarkdown file option form the dropdown");
                     this.wait(5000);
 
-                    if (this.assertVisible("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1)")) {
+                    if (this.test.assertVisible("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1)")) {
 
                         //Selecting desired file from the directory
                         casper.then(function () {
