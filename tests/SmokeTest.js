@@ -528,7 +528,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             console.log("Clicking on notebook info");
         });
 
-        this.wait(5000).then(function () {
+        this.wait(8000).then(function () {
             status = this.fetchText('.group-link > a:nth-child(1)');
             console.log("notebook is " + status);
             this.test.assertEquals(status, 'private', "The notebook has been converted to private successfully");

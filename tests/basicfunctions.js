@@ -38,7 +38,7 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
                 casper.wait(5000).viewport(1366, 768).then(function () {
                     if (this.getTitle().match(/Authorize RCloud/)) {
                         console.log("GitHub authorization page opened");
-                        this.waitForSelector(".btn", function(){
+                        this.waitForSelector(".btn", function () {
                             this.click(".btn");
                             console.log("Github Authorization completed");
                         });
@@ -133,17 +133,19 @@ exports.addcontentstocell = function (casper, input_code) {
     return casper
         .then(function () {
             this.wait(2000);
-            if (this.visible("div.edit-code > div:nth-child(3) > div:nth-child(1)")) {
-                this.test.pass('The cell is present');
-                console.log('Adding contents to the cell')
-                this.sendKeys("div.edit-code > div:nth-child(3) > div:nth-child(1)", input_code);
-                this.wait(4000);
-                this.click("div.cell-control-bar:nth-child(2) > span:nth-child(2) > i:nth-child(1)", "Executing cell contents");
-                this.wait(6000);
-            }
-            else {
-                this.test.fail('Cell is not present to pass the code content');
-            }
+            this.waitForSelector("div.edit-code > div:nth-child(3) > div:nth-child(1)", function () {
+                console.log("Cell is present to add contents to it");
+                if (this.visible("div.edit-code > div:nth-child(3) > div:nth-child(1)")) {
+                    console.log('Adding contents to the cell')
+                    this.sendKeys("div.edit-code > div:nth-child(3) > div:nth-child(1)", input_code);
+                    this.wait(4000);
+                    this.click("div.cell-control-bar:nth-child(2) > span:nth-child(2) > i:nth-child(1)", "Executing cell contents");
+                    this.wait(6000);
+                }
+                else {
+                    this.test.fail('Cell is not present to pass the code content');
+                }
+            });
         });
 };
 
