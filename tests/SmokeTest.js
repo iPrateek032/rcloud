@@ -57,6 +57,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         test.comment('⌚️  Creating new cell and adding contents to the cell...');
         this.wait(3000);
         functions.addnewcell(casper);
+        this.capture("./Images/new_cell.png");
     });
 
     casper.wait(2000).then(function () {
