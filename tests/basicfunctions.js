@@ -124,7 +124,7 @@ exports.addnewcell = function (casper) {
     return casper
         .then(function () {
             this.test.assertTruthy(this.click("span.cell-control > i:nth-child(1)", 'created new cell'), "New cell created");
-            this.wait(7000);
+            this.wait(8000);
         });
 };
 

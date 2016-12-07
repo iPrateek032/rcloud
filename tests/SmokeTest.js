@@ -84,7 +84,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             this.waitForSelector("div.modal-footer:nth-child(7) > span:nth-child(2)").thenClick("div.modal-footer:nth-child(7) > span:nth-child(2)");
         });
 
-        casper.wait(8000);
+        casper.wait(12000);
 
         casper.then(function () {
             test.assertExist(x(".//*[@id='part1.R']/div[3]/div[1]/div[1]/pre/code"), "User is able to pull the contents using URL");
