@@ -15,21 +15,13 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var curFilePath = curFilePath.replace(currentFile, '');
     fileName = curFilePath + fileName;
 
-    // var fileName = 'SampleFiles/html_widgets.Rmd'; // File path directory
-    // var title = "HTML Widgets Showcase";//title of the notebook
-    // var system = require('system');
-    // var currentFile = require('system').args[4];
-    // var curFilePath = fs.absolute(currentFile);
-    // var curFilePath = curFilePath.replace(currentFile, '');
-    // fileName = curFilePath + fileName;
-
     //Notebook paths to check for sharable links
     var Notebook_R = 'http://127.0.0.1:8080/notebook.R/564af357b532422620a6';
     var Mini = "http://127.0.0.1:8080/mini.html?notebook=f03ca14c9963e5718527";
     var Shiny = "http://127.0.0.1:8080/shiny.html?notebook=15a6054f8afd195302ef";
     var View = "http://127.0.0.1:8080/view.html?notebook=638ccc3aaeb391cc9888";
     var content = '"Welcome to RCloud"';
-    var URL, url, NB_ID, URL1, fetchTitle;
+    var URL, url, NB_ID, URL1, url2;
 
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);
@@ -43,10 +35,38 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     casper.then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
         functions.validation(casper);
-        // this.capture("./Images/capture.png");
     });
 
-    //creating new notebok
+    // //FlexDashboard.HTML
+    // casper.viewport(1024, 768).then(function () {
+    //     this.thenOpen("http://127.0.0.1:8080/shared.R/rcloud.flexdashboard/flexdashboard.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
+    //     console.log('Checking Flexdashboard.html');
+    //     this.wait(20000);
+    //     console.log(this.getCurrentUrl());
+    //     // this.test.assertUrlMatch(/flexdashboard.html/, 'flexdashboard.html link is opened');
+
+    //     casper.wait(20000).then(function () {
+    //         this.page.switchToChildFrame(0);
+    //         casper.withFrame(0, function () {
+    //             this.test.assertExists(".navbar-brand", "Navigation bar exists");
+    //             this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)")
+    //             this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+    //         });
+    //         this.page.switchToParentFrame();
+    //     });
+    // });
+
+
+    // casper.then(function () {
+    //     casper.then(function () {
+    //         this.back();
+    //         this.wait(5000);
+    //     });
+    //     this.thenOpen(url2);
+    //     this.wait(5000);
+    // });
+
+    // creating new notebok
     casper.then(function () {
         test.comment('⌚️  Creating New Notebook...');
         functions.create_notebook(casper);
@@ -57,41 +77,10 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         test.comment('⌚️  Creating new cell and adding contents to the cell...');
         this.wait(3000);
         functions.addnewcell(casper);
-        this.capture("./Images/new_cell.png");
     });
 
-    casper.wait(5000).then(function () {
+    casper.wait(2000).then(function () {
         functions.addcontentstocell(casper, content);
-    });
-
-    //Pull notebook by URL
-    casper.then(function () {
-        casper.echo('⌚️  Validating whether user is able to perform "Pull and replace notebook" option or not...');
-        casper.then(function () {
-            this.click("li.dropdown:nth-child(3) > a:nth-child(1)");
-            this.evaluate(function () {
-                $('#pull_and_replace_notebook').click();
-            });
-            this.echo('opened pull and replcae dialog box');
-            this.wait(2000);
-        });
-
-        casper.then(function () {
-
-            casper.evaluate(function () {
-                $('#pull-notebook-url').val("http://127.0.0.1:8080/edit.html?notebook=c2ea103432270bbf5f1a3d1e613d1b80");
-            });
-            console.log("Clicking on pull button");
-            this.waitForSelector("div.modal-footer:nth-child(7) > span:nth-child(2)").thenClick("div.modal-footer:nth-child(7) > span:nth-child(2)");
-        });
-
-        casper.wait(12000);
-
-        casper.then(function () {
-            test.assertExist(x(".//*[@id='part1.R']/div[3]/div[1]/div[1]/pre/code"), "User is able to pull the contents using URL");
-            var temp = this.fetchText(x(".//*[@id='part1.R']/div[3]/div[1]/div[1]/pre/code"));
-            this.test.assertNotEquals(temp, content, "Code content changed with the new code. Hence we can confirm user is able to perform pull notebook by URL");
-        });
     });
 
     //Saving the notebook details
@@ -157,11 +146,12 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     // Notebook reload
     casper.then(function () {
         this.then(function () {
-            var url2 = this.getCurrentUrl();
+            url2 = this.getCurrentUrl();
             this.thenOpen(url2);
             this.wait(8000);
         });
     });
+
 
     functions.open_advanceddiv(casper);
 
@@ -197,185 +187,112 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         this.wait(8000);
     });
 
-    // Click on RunAll and verify the output
-    casper.wait(5000).then(function () {
-        test.comment('⌚️  Executing cell contents (R, Shell and Markdown) ...');
-        functions.runall(casper);
-    });
+    // // Click on RunAll and verify the output
+    // casper.wait(5000).then(function () {
+    //     test.comment('⌚️  Executing cell contents (R, Shell and Markdown) ...');
+    //     functions.runall(casper);
+    // });
 
-    //verifying output for the each and ever single cell
-    casper.wait(10000).then(function () {
-        this.then(function () {
-            console.log(" Output of various cells ");
-            this.test.assertExists(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "R Cell has been executed and Output div is visible");
-            this.test.assertSelectorHasText(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "TRUE", "R cell has produced expected output");
-        });
+    // //verifying output for the each and ever single cell
+    // casper.wait(10000).then(function () {
+    //     this.then(function () {
+    //         console.log(" Output of various cells ");
+    //         this.test.assertExists(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "R Cell has been executed and Output div is visible");
+    //         this.test.assertSelectorHasText(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "TRUE", "R cell has produced expected output");
+    //     });
 
-        this.then(function () {
-            this.test.assertExists(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Markdown Cell has been executed and Output div is visible");
-            this.test.assertSelectorHasText(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Welcome to RCloud .!", "Markdown cell has produced expected output");
-        });
-    });
+    //     this.then(function () {
+    //         this.test.assertExists(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Markdown Cell has been executed and Output div is visible");
+    //         this.test.assertSelectorHasText(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Welcome to RCloud .!", "Markdown cell has produced expected output");
+    //     });
+    // });
 
-    casper.then(function () {
-        this.then(function () {
-            this.test.assertExists(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "Shell Cell has been executed and Output div is visible");
-            this.test.assertSelectorHasText(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "/tmp/Rserv/", "Shell cell has produced expected output");
-        });
-    });
+    // casper.then(function () {
+    //     this.then(function () {
+    //         this.test.assertExists(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "Shell Cell has been executed and Output div is visible");
+    //         this.test.assertSelectorHasText(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "/tmp/Rserv/", "Shell cell has produced expected output");
+    //     });
+    // });
 
-    //Verifying for workspace div
-    casper.then(function () {
-        test.comment('⌚️  Verifying for Workspace and Dataframe Divs contents...');
-        this.click('#accordion-right > div:nth-child(3) > div:nth-child(1)');
-        this.wait(5000).then(function () {
-            var data = this.fetchText("#enviewer-body-wrapper");
-            console.log("Workspace has produced following Dataframe : \n\ " + data);
-        });
-    });
+    // //Verifying for workspace div
+    // casper.then(function () {
+    //     test.comment('⌚️  Verifying for Workspace and Dataframe Divs contents...');
+    //     this.click('#accordion-right > div:nth-child(3) > div:nth-child(1)');
+    //     this.wait(5000).then(function () {
+    //         var data = this.fetchText("#enviewer-body-wrapper");
+    //         console.log("Workspace has produced following Dataframe : \n\ " + data);
+    //     });
+    // });
 
-    //Verify for dataframe div
-    casper.wait(5000).then(function () {
-        console.log("Clicking on dataframe, from the workspace div");
-        this.waitForSelector("#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)", function () {
-            this.click('#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)');
-        });
-        this.wait(6000).then(function () {
-            var df = this.fetchText("#viewer-body");
-            console.log("Contents of Dataframe: \n\ " + df);
-        });
-    });
+    // //Verify for dataframe div
+    // casper.wait(5000).then(function () {
+    //     console.log("Clicking on dataframe, from the workspace div");
+    //     this.waitForSelector("#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)", function () {
+    //         this.click('#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)');
+    //     });
+    //     this.wait(6000).then(function () {
+    //         var df = this.fetchText("#viewer-body");
+    //         console.log("Contents of Dataframe: \n\ " + df);
+    //     });
+    // });
 
-    // Now uploading a binary file to the Notebook
-    casper.then(function () {
-        casper.then(function () {
-            this.thenOpen(URL);
-            test.comment('⌚️  Uploading binary file to the Notebook ...');
-            this.wait(5000);
-        });
+    // //Now uploading a binary file to the Notebook
+    // casper.then(function () {
+    //     casper.then(function () {
+    //         this.thenOpen(URL);
+    //         test.comment('⌚️  Uploading binary file to the Notebook ...');
+    //         this.wait(5000);
+    //     });
 
-        //Verifying whether file upload div is open or not
-        casper.wait(2000).then(function () {
-            if (this.visible(x(".//*[@id='file']"))) {
-                this.echo('File Upload pane div is open');
-                this.wait(5000);
-            }
-            else {
-                this.echo('File upload div is not open,hence opening it');
-                this.wait(2000);
-                this.click(x(".//*[@id='accordion-right']/div[2]/div[1]"));
-            }
-        });
+    //     //Verifying whether file upload div is open or not
+    //     casper.wait(2000).then(function () {
+    //         if (this.visible(x(".//*[@id='file']"))) {
+    //             this.echo('File Upload pane div is open');
+    //             this.wait(5000);
+    //         }
+    //         else {
+    //             this.echo('File upload div is not open,hence opening it');
+    //             this.wait(2000);
+    //             this.click(x(".//*[@id='accordion-right']/div[2]/div[1]"));
+    //         }
+    //     });
 
-        //Uploading file
-        casper.wait(3000).then(function () {
-            casper.page.uploadFile("#file", fileName);
-            console.log('Selecting file from directory');
-        });
+    //     //Uploading file
+    //     casper.wait(3000).then(function () {
+    //         casper.page.uploadFile("#file", fileName);
+    //         console.log('Selecting file from directory');
+    //     });
 
-        casper.then(function () {
-            this.wait(5000, function () {
-                this.click("#upload-to-notebook");
-                console.log("Clicking on 'Upload to notebook' check box");
-                this.click("#upload-submit");
-                console.log("Clicking on Submit icon");
-            });
-        });
+    //     casper.then(function () {
+    //         this.wait(5000, function () {
+    //             this.click("#upload-to-notebook");
+    //             console.log("Clicking on 'Upload to notebook' check box");
+    //             this.click("#upload-submit");
+    //             console.log("Clicking on Submit icon");
+    //         });
+    //     });
 
-        casper.then(function () {
-            this.wait(5000);
-            this.waitUntilVisible(x('//*[contains(text(), "added")]'), function then() {
-                console.log("File has been uploaded");
-            });
-        });
+    //     casper.then(function () {
+    //         this.wait(5000);
+    //         this.waitUntilVisible(x('//*[contains(text(), "added")]'), function then() {
+    //             console.log("File has been uploaded");
+    //         });
+    //     });
 
-        casper.wait(10000).then(function () {
-            console.log(" Verifying file has been uploaded to Notebook or not ");
-            this.then(function () {
-                this.test.assertSelectorHasText("#asset-list", 'PHONE.csv', 'Uploaded file is present in assets');
-                console.log("Confirmed. File can be uploaded to the Notebook");
-            });
+    //     casper.wait(10000).then(function () {
+    //         console.log(" Verifying file has been uploaded to Notebook or not ");
+    //         this.then(function () {
+    //             this.test.assertSelectorHasText("#asset-list", 'PHONE.csv', 'Uploaded file is present in assets');
+    //             console.log("Confirmed. File can be uploaded to the Notebook");
+    //         });
 
-            this.then(function () {
-                console.log("Deleting Uploaded asset from the Notebook");
-                this.click(x(".//*[@id='asset-list']/li[3]/div/span[2]/i"));
-                this.test.assertSelectorDoesntHaveText("#asset-list", "PHONE.csv", "Confirmed that Asset has been successfully removed");
-            });
-        });
-    });
-
-    /*
-     //Importing Rmarkdown file from the system
-     casper.then(function () {
-     this.thenOpen(URL);
-     this.wait(5000);
-     casper.wait(3000).then(function () {
-     //Opening advanced dropdown option
-     casper.then(function () {
-     functions.open_advanceddiv(casper);
-     this.click("#rmdImport");
-     console.log("Clicking on import Rmarkdown file option form the dropdown");
-     this.wait(3000);
-     });
-
-     //Selecting desired file from the directory
-     casper.then(function () {
-     this.wait(5000);
-     this.capture("./Images/import_Rmd_File.png");
-     this.evaluate(function (fileName) {
-     __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName)
-     }, {fileName: fileName});
-     this.page.uploadFile('input[id="notebook-file-upload"]', fileName);
-     console.log('Selecting a file');
-     });
-
-     casper.wait(5000);
-     });
-
-
-     casper.wait(2000).then(function () {
-     this.capture("./Images/import_Rmd_File1.png");
-     // this.click("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)");
-     casper.click(x('//*[text()="Import"]'));
-     console.log("Clicking on import button")
-     this.wait(3000);
-     });
-
-     // casper.then(function (){
-     //     this.thenOpen(URL);
-     //     this.wait(8000);
-     // });
-
-     casper.then(function () {
-     flag = 0;//to check if notebook has been found
-     var counter = 0;//counts the number of notebooks
-     do
-     {
-     counter = counter + 1;
-
-     } while (this.visible("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + counter + ") > div:nth-child(1) > span:nth-child(1)"));
-     counter = counter + 1;
-     for (v = 1; v <= counter; v++) {
-     this.wait(2000);
-     fetchTitle = this.fetchText("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + v + ") > div:nth-child(1) > span:nth-child(1)");
-     if (fetchTitle == title) {
-     flag = 1;
-     break;
-     }
-     }//for closes
-     this.test.assertEquals(flag, 1, "Located the imported Rmarkdown notebook");
-     });
-
-     casper.then(function () {
-     if (flag == 1) {
-     this.test.assertEquals(flag, 1, "Import Notebook from File, Notebook with title " + title + " is PRESENT under Notebooks tree");
-     }
-     else {
-     this.test.assertEquals(flag, 0, "Import Notebook from File, Notebook with title " + title + " is ABSENT under Notebooks tree");
-     }
-     });
-     });
-     */
+    //         this.then(function () {
+    //             console.log("Deleting Uploaded asset from the Notebook");
+    //             this.click(x(".//*[@id='asset-list']/li[3]/div/span[2]/i"));
+    //             this.test.assertSelectorDoesntHaveText("#asset-list", "PHONE.csv", "Confirmed that Asset has been successfully removed");
+    //         });
+    //     });
+    // });
 
     //Checking for Fork feature
     casper.then(function () {
@@ -409,6 +326,39 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             }, function () {
                 console.log("View.html page could not be loaded");
             }, 60000);
+        });
+
+        casper.viewport(1366, 768).then(function () {
+            this.thenOpen("http://127.0.0.1:8080/edit.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
+            this.wait(8000);
+
+            test.comment('⌚️  Opening Notebook Flexdashboard.html ...');
+
+            this.waitForSelector("span.dropdown", function () {
+                console.log("choosing flexdashboard from the dropdown");
+                this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                this.wait(2000);
+                if (this.click("#share-link > i:nth-child(1)")) {
+                    this.wait(8000);
+                    this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
+                        this.wait(15000);
+                        console.log(this.getCurrentUrl());
+                        casper.wait(20000).then(function () {
+                            this.page.switchToChildFrame(0);
+                            casper.withFrame(0, function () {
+                                this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                                this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                                this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                            });
+                            this.page.switchToParentFrame();
+                        });
+                    });
+                }
+                else {
+                    console.log("Maa chudao");
+                }
+
+            });
         });
     });
 
@@ -529,7 +479,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             console.log("Clicking on notebook info");
         });
 
-        this.wait(8000).then(function () {
+        this.wait(5000).then(function () {
             status = this.fetchText('.group-link > a:nth-child(1)');
             console.log("notebook is " + status);
             this.test.assertEquals(status, 'private', "The notebook has been converted to private successfully");
@@ -564,6 +514,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             this.wait(5000);
         });
     });
+
 
     // loging out of RCloud
     casper.viewport(1366, 768).then(function () {
