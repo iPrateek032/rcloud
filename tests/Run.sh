@@ -22,7 +22,7 @@ Rscript -e 'devtools::install_github("att/rcloud.htmlwidgets")'
 Rscript -e 'devtools::install_github("att/rcloud.flexdashboard")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
-Rscript -e R_dependencies.R
+# Rscript -e R_dependencies.R
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
