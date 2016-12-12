@@ -1,4 +1,4 @@
-casper.test.begin("Smoke Test case which covers basic features", 29, function suite(test) {
+casper.test.begin("Smoke Test case which covers basic features", 35, function suite(test) {
 
     var x = require('casper').selectXPath;//required if we detect an element using xpath
     var github_username = casper.cli.options.username;//user input github username
@@ -21,7 +21,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var Shiny = "http://127.0.0.1:8080/shiny.html?notebook=15a6054f8afd195302ef";
     var View = "http://127.0.0.1:8080/view.html?notebook=638ccc3aaeb391cc9888";
     var content = '"Welcome to RCloud"';
-    var URL, url, NB_ID, URL1, url2;
+    var URL, url, NB_ID, URL1, url2, flex_dash;
 
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);
@@ -36,35 +36,6 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
         functions.validation(casper);
     });
-
-    // //FlexDashboard.HTML
-    // casper.viewport(1024, 768).then(function () {
-    //     this.thenOpen("http://127.0.0.1:8080/shared.R/rcloud.flexdashboard/flexdashboard.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
-    //     console.log('Checking Flexdashboard.html');
-    //     this.wait(20000);
-    //     console.log(this.getCurrentUrl());
-    //     // this.test.assertUrlMatch(/flexdashboard.html/, 'flexdashboard.html link is opened');
-
-    //     casper.wait(20000).then(function () {
-    //         this.page.switchToChildFrame(0);
-    //         casper.withFrame(0, function () {
-    //             this.test.assertExists(".navbar-brand", "Navigation bar exists");
-    //             this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)")
-    //             this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-    //         });
-    //         this.page.switchToParentFrame();
-    //     });
-    // });
-
-
-    // casper.then(function () {
-    //     casper.then(function () {
-    //         this.back();
-    //         this.wait(5000);
-    //     });
-    //     this.thenOpen(url2);
-    //     this.wait(5000);
-    // });
 
     // creating new notebok
     casper.then(function () {
@@ -187,112 +158,112 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         this.wait(8000);
     });
 
-    // // Click on RunAll and verify the output
-    // casper.wait(5000).then(function () {
-    //     test.comment('⌚️  Executing cell contents (R, Shell and Markdown) ...');
-    //     functions.runall(casper);
-    // });
+    // Click on RunAll and verify the output
+    casper.wait(5000).then(function () {
+        test.comment('⌚️  Executing cell contents (R, Shell and Markdown) ...');
+        functions.runall(casper);
+    });
 
-    // //verifying output for the each and ever single cell
-    // casper.wait(10000).then(function () {
-    //     this.then(function () {
-    //         console.log(" Output of various cells ");
-    //         this.test.assertExists(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "R Cell has been executed and Output div is visible");
-    //         this.test.assertSelectorHasText(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "TRUE", "R cell has produced expected output");
-    //     });
+    //verifying output for the each and ever single cell
+    casper.wait(10000).then(function () {
+        this.then(function () {
+            console.log(" Output of various cells ");
+            this.test.assertExists(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "R Cell has been executed and Output div is visible");
+            this.test.assertSelectorHasText(x(".//*[@id='part1.R']/div[3]/div[2]/pre/code"), "TRUE", "R cell has produced expected output");
+        });
 
-    //     this.then(function () {
-    //         this.test.assertExists(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Markdown Cell has been executed and Output div is visible");
-    //         this.test.assertSelectorHasText(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Welcome to RCloud .!", "Markdown cell has produced expected output");
-    //     });
-    // });
+        this.then(function () {
+            this.test.assertExists(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Markdown Cell has been executed and Output div is visible");
+            this.test.assertSelectorHasText(x(".//*[@id='part2.md']/div[3]/div[2]/h1"), "Welcome to RCloud .!", "Markdown cell has produced expected output");
+        });
+    });
 
-    // casper.then(function () {
-    //     this.then(function () {
-    //         this.test.assertExists(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "Shell Cell has been executed and Output div is visible");
-    //         this.test.assertSelectorHasText(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "/tmp/Rserv/", "Shell cell has produced expected output");
-    //     });
-    // });
+    casper.then(function () {
+        this.then(function () {
+            this.test.assertExists(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "Shell Cell has been executed and Output div is visible");
+            this.test.assertSelectorHasText(x(".//*[@id='part3.sh']/div[3]/div[2]/pre/code"), "/tmp/Rserv/", "Shell cell has produced expected output");
+        });
+    });
 
-    // //Verifying for workspace div
-    // casper.then(function () {
-    //     test.comment('⌚️  Verifying for Workspace and Dataframe Divs contents...');
-    //     this.click('#accordion-right > div:nth-child(3) > div:nth-child(1)');
-    //     this.wait(5000).then(function () {
-    //         var data = this.fetchText("#enviewer-body-wrapper");
-    //         console.log("Workspace has produced following Dataframe : \n\ " + data);
-    //     });
-    // });
+    //Verifying for workspace div
+    casper.then(function () {
+        test.comment('⌚️  Verifying for Workspace and Dataframe Divs contents...');
+        this.click('#accordion-right > div:nth-child(3) > div:nth-child(1)');
+        this.wait(5000).then(function () {
+            var data = this.fetchText("#enviewer-body-wrapper");
+            console.log("Workspace has produced following Dataframe : \n\ " + data);
+        });
+    });
 
-    // //Verify for dataframe div
-    // casper.wait(5000).then(function () {
-    //     console.log("Clicking on dataframe, from the workspace div");
-    //     this.waitForSelector("#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)", function () {
-    //         this.click('#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)');
-    //     });
-    //     this.wait(6000).then(function () {
-    //         var df = this.fetchText("#viewer-body");
-    //         console.log("Contents of Dataframe: \n\ " + df);
-    //     });
-    // });
+    //Verify for dataframe div
+    casper.wait(5000).then(function () {
+        console.log("Clicking on dataframe, from the workspace div");
+        this.waitForSelector("#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)", function () {
+            this.click('#enviewer-body > table:nth-child(1) > tr:nth-child(2) > td:nth-child(2) > a:nth-child(1)');
+        });
+        this.wait(6000).then(function () {
+            var df = this.fetchText("#viewer-body");
+            console.log("Contents of Dataframe: \n\ " + df);
+        });
+    });
 
-    // //Now uploading a binary file to the Notebook
-    // casper.then(function () {
-    //     casper.then(function () {
-    //         this.thenOpen(URL);
-    //         test.comment('⌚️  Uploading binary file to the Notebook ...');
-    //         this.wait(5000);
-    //     });
+    //Now uploading a binary file to the Notebook
+    casper.then(function () {
+        casper.then(function () {
+            this.thenOpen(URL);
+            test.comment('⌚️  Uploading binary file to the Notebook ...');
+            this.wait(5000);
+        });
 
-    //     //Verifying whether file upload div is open or not
-    //     casper.wait(2000).then(function () {
-    //         if (this.visible(x(".//*[@id='file']"))) {
-    //             this.echo('File Upload pane div is open');
-    //             this.wait(5000);
-    //         }
-    //         else {
-    //             this.echo('File upload div is not open,hence opening it');
-    //             this.wait(2000);
-    //             this.click(x(".//*[@id='accordion-right']/div[2]/div[1]"));
-    //         }
-    //     });
+        //Verifying whether file upload div is open or not
+        casper.wait(2000).then(function () {
+            if (this.visible(x(".//*[@id='file']"))) {
+                this.echo('File Upload pane div is open');
+                this.wait(5000);
+            }
+            else {
+                this.echo('File upload div is not open,hence opening it');
+                this.wait(2000);
+                this.click(x(".//*[@id='accordion-right']/div[2]/div[1]"));
+            }
+        });
 
-    //     //Uploading file
-    //     casper.wait(3000).then(function () {
-    //         casper.page.uploadFile("#file", fileName);
-    //         console.log('Selecting file from directory');
-    //     });
+        //Uploading file
+        casper.wait(3000).then(function () {
+            casper.page.uploadFile("#file", fileName);
+            console.log('Selecting file from directory');
+        });
 
-    //     casper.then(function () {
-    //         this.wait(5000, function () {
-    //             this.click("#upload-to-notebook");
-    //             console.log("Clicking on 'Upload to notebook' check box");
-    //             this.click("#upload-submit");
-    //             console.log("Clicking on Submit icon");
-    //         });
-    //     });
+        casper.then(function () {
+            this.wait(5000, function () {
+                this.click("#upload-to-notebook");
+                console.log("Clicking on 'Upload to notebook' check box");
+                this.click("#upload-submit");
+                console.log("Clicking on Submit icon");
+            });
+        });
 
-    //     casper.then(function () {
-    //         this.wait(5000);
-    //         this.waitUntilVisible(x('//*[contains(text(), "added")]'), function then() {
-    //             console.log("File has been uploaded");
-    //         });
-    //     });
+        casper.then(function () {
+            this.wait(5000);
+            this.waitUntilVisible(x('//*[contains(text(), "added")]'), function then() {
+                console.log("File has been uploaded");
+            });
+        });
 
-    //     casper.wait(10000).then(function () {
-    //         console.log(" Verifying file has been uploaded to Notebook or not ");
-    //         this.then(function () {
-    //             this.test.assertSelectorHasText("#asset-list", 'PHONE.csv', 'Uploaded file is present in assets');
-    //             console.log("Confirmed. File can be uploaded to the Notebook");
-    //         });
+        casper.wait(10000).then(function () {
+            console.log(" Verifying file has been uploaded to Notebook or not ");
+            this.then(function () {
+                this.test.assertSelectorHasText("#asset-list", 'PHONE.csv', 'Uploaded file is present in assets');
+                console.log("Confirmed. File can be uploaded to the Notebook");
+            });
 
-    //         this.then(function () {
-    //             console.log("Deleting Uploaded asset from the Notebook");
-    //             this.click(x(".//*[@id='asset-list']/li[3]/div/span[2]/i"));
-    //             this.test.assertSelectorDoesntHaveText("#asset-list", "PHONE.csv", "Confirmed that Asset has been successfully removed");
-    //         });
-    //     });
-    // });
+            this.then(function () {
+                console.log("Deleting Uploaded asset from the Notebook");
+                this.click(x(".//*[@id='asset-list']/li[3]/div/span[2]/i"));
+                this.test.assertSelectorDoesntHaveText("#asset-list", "PHONE.csv", "Confirmed that Asset has been successfully removed");
+            });
+        });
+    });
 
     //Checking for Fork feature
     casper.then(function () {
@@ -341,8 +312,9 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
                 if (this.click("#share-link > i:nth-child(1)")) {
                     this.wait(8000);
                     this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
-                        this.wait(15000);
-                        console.log(this.getCurrentUrl());
+                        this.wait(20000);
+                        flex_dash = this.getCurrentUrl();
+                        console.log(flex_dash);
                         casper.wait(20000).then(function () {
                             this.page.switchToChildFrame(0);
                             casper.withFrame(0, function () {
@@ -568,6 +540,25 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             this.wait(8000);
             this.waitForSelector("body > h1:nth-child(1)", function () {
                 this.test.assertSelectorHasText("body > h1:nth-child(1)", "Hello, world!", "Anonymous user is able to open published notebook in Mini.html");
+            });
+        });
+    });
+
+    casper.viewport(1024, 768).then(function () {
+        test.comment("Opening Flexdashboard.html noteook as anonymous user");
+        casper.page = casper.newPage();
+        casper.viewport(1024, 768).open(flex_dash).then(function () {
+            this.wait(28000);
+            casper.wait(20000).then(function () {
+                console.log(this.getCurrentUrl());
+                this.wait(28000);
+                this.page.switchToChildFrame(0);
+                casper.withFrame(0, function () {
+                    this.test.assertExists(".navbar-brand", "Navigation bar exists");
+                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)")
+                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                });
+                this.page.switchToParentFrame();
             });
         });
     });
