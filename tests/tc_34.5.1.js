@@ -1,11 +1,9 @@
 /*
  Author: Amith
  Description: This is a casperjs automated test script for showing that When the "flexdashboard.html" is selected from the dropdown menu near the shareable link, if we click on the shareable link it will display the output of the code present in the notebook in new tab
-
- */
+*/
 
 //Begin Tests
-
 casper.test.begin("flexdashboard.html test", 10, function suite(test) {
 
     var x = require('casper').selectXPath;
