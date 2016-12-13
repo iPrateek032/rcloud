@@ -123,7 +123,13 @@ exports.search1 = function (casper, search_Content) {
 exports.addnewcell = function (casper) {
     return casper
         .then(function () {
-            this.test.assertTruthy(this.click("span.cell-control > i:nth-child(1)", 'created new cell'), "New cell created");
+            // this.test.assertTruthy(this.click("span.cell-control > i:nth-child(1)", 'created new cell'), "New cell created");
+            this.click("span.cell-control > i:nth-child(1)");
+            console.log("Clicking on ' + ' icon to add new cell");
+            this.wait(5000);
+            this.waitForSelector("div.cell-control-bar:nth-child(2) > span:nth-child(2) > i:nth-child(1)", function (){
+                this.test.assertExists("div.edit-code > div:nth-child(3) > div:nth-child(1)", "Cell is present. Hence confirmed new cell is created");
+            });
             this.wait(8000);
         });
 };
