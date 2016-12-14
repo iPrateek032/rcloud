@@ -42,6 +42,11 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         this.capture("./Images/BeforeNotebookCreation.png");
     });
 
+    casper.then(function (){
+        this.reload();
+        this.wait(10000);
+    });
+
     // creating new notebok
     casper.then(function () {
         test.comment('⌚️  Creating New Notebook...');
