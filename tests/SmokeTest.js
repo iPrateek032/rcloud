@@ -51,8 +51,9 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         functions.addnewcell(casper);
     });
 
-    casper.wait(2000).then(function () {
+    casper.wait(4000).then(function () {
         functions.addcontentstocell(casper, content);
+        this.capture("./Images/CheckForCell.png");
     });
 
     //Saving the notebook details
