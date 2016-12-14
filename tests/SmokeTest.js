@@ -1,4 +1,4 @@
-casper.test.begin("Smoke Test case which covers basic features", 35, function suite(test) {
+casper.test.begin("Smoke Test case which covers basic features", 29, function suite(test) {
 
     var x = require('casper').selectXPath;//required if we detect an element using xpath
     var github_username = casper.cli.options.username;//user input github username
@@ -7,8 +7,6 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     var functions = require(fs.absolute('basicfunctions.js'));//invoke the common functions present in basicfunctions.js
     var notebook_id = '60cf414db458dae177addac8d48d4dea';//Notebook which consists all the cells like "R, Python, Markdown, Shell"
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
-    var errors = [];
-    colorizer = require('colorizer').create('Colorizer');
 
     var fileName = "SampleFiles/PHONE.csv";
     var system = require('system');
@@ -23,7 +21,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     var Shiny = "http://127.0.0.1:8080/shiny.html?notebook=15a6054f8afd195302ef";
     var View = "http://127.0.0.1:8080/view.html?notebook=638ccc3aaeb391cc9888";
     var content = '"Welcome to RCloud"';
-    var URL, url, NB_ID, URL1, url2, flex_dash;
+    var URL, url, NB_ID, URL1;
 
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);
@@ -32,43 +30,30 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     casper.viewport(1024, 768).then(function () {
         test.comment('⌚️  Logging in to RCloud using GitHub credentials...');
         functions.login(casper, github_username, github_password, rcloud_url);
+        this.capture("./Images/RCLOUD_PAGE.png");
     });
 
     casper.then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
-        this.capture("./Images/RCLOUD_PAGE.png");
         functions.validation(casper);
-        this.wait(15000);
-        this.capture("./Images/BeforeNotebookCreation.png");
+         this.capture("capture1.png");
     });
 
-    casper.then(function (){
-        this.reload();
-        this.wait(10000);
-    });
-
-    // creating new notebok
+    //creating new notebok
     casper.then(function () {
         test.comment('⌚️  Creating New Notebook...');
         functions.create_notebook(casper);
         console.log("Verified that new notebook can be created");
-        this.wait(15000);
-        this.capture("./Images/AfterNotebookCreation.png");
     });
 
     casper.then(function () {
         test.comment('⌚️  Creating new cell and adding contents to the cell...');
         this.wait(3000);
         functions.addnewcell(casper);
-        this.wait(5000);
-        var session_err = this.fetchText("#session-info-panel");
-        console.log(colorizer.colorize("SESSION DIV PRODUCED ERROR ", "RED_BAR"));
-        console.log("Session div error ---> " + session_err);
     });
 
-    casper.wait(4000).then(function () {
+    casper.wait(2000).then(function () {
         functions.addcontentstocell(casper, content);
-        this.capture("./Images/CheckForCell.png");
     });
 
     //Saving the notebook details
@@ -134,12 +119,11 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     // Notebook reload
     casper.then(function () {
         this.then(function () {
-            url2 = this.getCurrentUrl();
+            var url2 = this.getCurrentUrl();
             this.thenOpen(url2);
             this.wait(8000);
         });
     });
-
 
     functions.open_advanceddiv(casper);
 
@@ -315,49 +299,6 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
                 console.log("View.html page could not be loaded");
             }, 60000);
         });
-
-        casper.viewport(1366, 768).then(function () {
-            this.thenOpen("http://127.0.0.1:8080/edit.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
-            this.wait(8000);
-
-            test.comment('⌚️  Opening Notebook Flexdashboard.html ...');
-
-            this.waitForSelector("span.dropdown", function () {
-                console.log("choosing flexdashboard from the dropdown");
-                this.click("span.dropdown");
-                this.wait(2000);
-                this.capture("./Images/Check for Flexdashboard.png");
-                console.log("opening dropdown menu");
-                if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
-                    this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
-                    this.wait(2000);
-                    if (this.click("#share-link > i:nth-child(1)")) {
-                        this.wait(8000);
-                        this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
-                            this.wait(20000);
-                            flex_dash = this.getCurrentUrl();
-                            console.log(flex_dash);
-                            casper.wait(20000).then(function () {
-                                this.page.switchToChildFrame(0);
-                                casper.withFrame(0, function () {
-                                    this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
-                                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
-                                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-                                });
-                                this.page.switchToParentFrame();
-                            });
-                        });
-                    }//if close
-                    else {
-                        console.log("Maa chudao");
-                    }//else close
-                }//if close
-                else {
-                    console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
-                    // console.log("");
-                }
-            });
-        });
     });
 
     casper.then(function () {
@@ -477,7 +418,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
             console.log("Clicking on notebook info");
         });
 
-        this.wait(8000).then(function () {
+        this.wait(5000).then(function () {
             status = this.fetchText('.group-link > a:nth-child(1)');
             console.log("notebook is " + status);
             this.test.assertEquals(status, 'private', "The notebook has been converted to private successfully");
@@ -512,7 +453,6 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
             this.wait(5000);
         });
     });
-
 
     // loging out of RCloud
     casper.viewport(1366, 768).then(function () {
@@ -570,45 +510,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         });
     });
 
-    casper.viewport(1024, 768).then(function () {
-        test.comment("Opening Flexdashboard.html noteook as anonymous user");
-        casper.page = casper.newPage();
-        casper.viewport(1024, 768).open(flex_dash).then(function () {
-            this.wait(28000);
-            casper.wait(20000).then(function () {
-                console.log(this.getCurrentUrl());
-                this.wait(28000);
-                this.page.switchToChildFrame(0);
-                casper.withFrame(0, function () {
-                    this.test.assertExists(".navbar-brand", "Navigation bar exists");
-                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)")
-                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
-                });
-                this.page.switchToParentFrame();
-            });
-        });
-    });
-
-//     casper.run(function () {
-//         test.done();
-//     });
-// });
-
-    // Registering to the page.errors actually not required but still if there are some errors found on the page it will gives us the details
-    casper.on("page.error", function(msg, trace) {
-      this.echo("Error:    " + msg, "ERROR");
-      this.echo("file:     " + trace[0].file, "WARNING");
-      this.echo("line:     " + trace[0].line, "WARNING");
-      this.echo("function: " + trace[0]["function"], "WARNING");
-      errors.push(msg);
-    });
-    
-    casper.run(function() {
-      if (errors.length > 0) {
-        this.echo(errors.length + ' Javascript errors found', "WARNING");
-      } else {
-        this.echo(errors.length + ' Javascript errors found', "INFO");
-      }
-      test.done();
+    casper.run(function () {
+        test.done();
     });
 });
