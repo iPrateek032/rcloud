@@ -7,6 +7,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     var functions = require(fs.absolute('basicfunctions.js'));//invoke the common functions present in basicfunctions.js
     var notebook_id = '60cf414db458dae177addac8d48d4dea';//Notebook which consists all the cells like "R, Python, Markdown, Shell"
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
+    colorizer = require('colorizer').create('Colorizer');
 
     var fileName = "SampleFiles/PHONE.csv";
     var system = require('system');
@@ -307,29 +308,38 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
 
             this.waitForSelector("span.dropdown", function () {
                 console.log("choosing flexdashboard from the dropdown");
-                this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                this.click("span.dropdown");
                 this.wait(2000);
-                if (this.click("#share-link > i:nth-child(1)")) {
-                    this.wait(8000);
-                    this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
-                        this.wait(20000);
-                        flex_dash = this.getCurrentUrl();
-                        console.log(flex_dash);
-                        casper.wait(20000).then(function () {
-                            this.page.switchToChildFrame(0);
-                            casper.withFrame(0, function () {
-                                this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
-                                this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
-                                this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                this.capture("./Images/Check for Flexdashboard.png");
+                console.log("opening dropdown menu");
+                if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
+                    this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                    this.wait(2000);
+                    if (this.click("#share-link > i:nth-child(1)")) {
+                        this.wait(8000);
+                        this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
+                            this.wait(20000);
+                            flex_dash = this.getCurrentUrl();
+                            console.log(flex_dash);
+                            casper.wait(20000).then(function () {
+                                this.page.switchToChildFrame(0);
+                                casper.withFrame(0, function () {
+                                    this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                                });
+                                this.page.switchToParentFrame();
                             });
-                            this.page.switchToParentFrame();
                         });
-                    });
-                }
+                    }//if close
+                    else {
+                        console.log("Maa chudao");
+                    }//else close
+                }//if close
                 else {
-                    console.log("Maa chudao");
+                    console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
+                    // console.log("");
                 }
-
             });
         });
     });
