@@ -37,6 +37,8 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     casper.then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
         functions.validation(casper);
+        this.wait(5000);
+        this.capture("./Images/BeforeNotebookCreation.png");
     });
 
     // creating new notebok
@@ -44,7 +46,8 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         test.comment('⌚️  Creating New Notebook...');
         functions.create_notebook(casper);
         console.log("Verified that new notebook can be created");
-        this.wait(5000);
+        this.wait(15000);
+        this.capture("./Images/AfterNotebookCreation.png");
     });
 
     casper.then(function () {

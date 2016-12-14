@@ -65,11 +65,12 @@ exports.login = function (casper, github_username, github_password, rcloud_url) 
 exports.create_notebook = function (casper) {
     return casper
         .then(function () {
+            //----------
             var z = casper.evaluate(function () {
                 $('#new-notebook').click();
             });
             this.echo("New Notebook created");
-            this.wait(9000);
+            this.wait(10000);
         });
 };
 
