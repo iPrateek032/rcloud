@@ -7,7 +7,7 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
     var functions = require(fs.absolute('basicfunctions.js'));//invoke the common functions present in basicfunctions.js
     var notebook_id = '60cf414db458dae177addac8d48d4dea';//Notebook which consists all the cells like "R, Python, Markdown, Shell"
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
-    var errors = [];
+    // var errors = [];
     colorizer = require('colorizer').create('Colorizer');
 
     var fileName = "SampleFiles/PHONE.csv";
@@ -589,26 +589,26 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         });
     });
 
-//     casper.run(function () {
-//         test.done();
-//     });
-// });
-
-    // Registering to the page.errors actually not required but still if there are some errors found on the page it will gives us the details
-    casper.on("page.error", function(msg, trace) {
-      this.echo("Error:    " + msg, "ERROR");
-      this.echo("file:     " + trace[0].file, "WARNING");
-      this.echo("line:     " + trace[0].line, "WARNING");
-      this.echo("function: " + trace[0]["function"], "WARNING");
-      errors.push(msg);
-    });
-    
-    casper.run(function() {
-      if (errors.length > 0) {
-        this.echo(errors.length + ' Javascript errors found', "WARNING");
-      } else {
-        this.echo(errors.length + ' Javascript errors found', "INFO");
-      }
-      test.done();
+    casper.run(function () {
+        test.done();
     });
 });
+
+//     // Registering to the page.errors actually not required but still if there are some errors found on the page it will gives us the details
+//     casper.on("page.error", function(msg, trace) {
+//       this.echo("Error:    " + msg, "ERROR");
+//       this.echo("file:     " + trace[0].file, "WARNING");
+//       this.echo("line:     " + trace[0].line, "WARNING");
+//       this.echo("function: " + trace[0]["function"], "WARNING");
+//       errors.push(msg);
+//     });
+    
+//     casper.run(function() {
+//       if (errors.length > 0) {
+//         this.echo(errors.length + ' Javascript errors found', "WARNING");
+//       } else {
+//         this.echo(errors.length + ' Javascript errors found', "INFO");
+//       }
+//       test.done();
+//     });
+// });
