@@ -26,7 +26,7 @@ cd /home/travis/build/iPrateek032/rcloud/tests
 #sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
-sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs --verbose --log-level=debug $1 --username=att-MuSigma --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
+sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=att-MuSigma --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
 # sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs 2-3Test/*.js --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
 
 echo -e "Starting to update AUTO_IMG\n"

@@ -35,10 +35,13 @@ casper.test.begin("Smoke Test case which covers basic features", 35, function su
         this.capture("./Images/RCLOUD_PAGE.png");
     });
 
-    casper.then(function () {
+    casper.wait(4000).then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
+        this.capture("./Images/RCLOUD_PAGE.png");
         functions.validation(casper);
         this.wait(15000);
+        this.thenOpen('http://127.0.0.1:8080/edit.html?notebook=564af357b532422620a6');
+        this.wait(5000);
         this.capture("./Images/BeforeNotebookCreation.png");
     });
 
