@@ -1,4 +1,4 @@
-casper.test.begin("Smoke Test case which covers basic features", 29, function suite(test) {
+casper.test.begin("Smoke Test case which covers basic features", 35, function suite(test) {
 
     var x = require('casper').selectXPath;//required if we detect an element using xpath
     var github_username = casper.cli.options.username;//user input github username
@@ -7,8 +7,9 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var functions = require(fs.absolute('basicfunctions.js'));//invoke the common functions present in basicfunctions.js
     var notebook_id = '60cf414db458dae177addac8d48d4dea';//Notebook which consists all the cells like "R, Python, Markdown, Shell"
     var Notebook_name = "TEST_NOTEBOOK";// Notebook name of the importing/Load Notebook
+    // var errors = [];
+    colorizer = require('colorizer').create('Colorizer');
 
-    //Uploading to assets
     var fileName = "SampleFiles/PHONE.csv";
     var system = require('system');
     var currentFile = require('system').args[4];
@@ -16,22 +17,13 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     var curFilePath = curFilePath.replace(currentFile, '');
     fileName = curFilePath + fileName;
 
-    //file for importing Rmarkdown
-    var fileName1 = 'SampleFiles/waste-lands.Rmd'; // File path directory
-    var title = "Waste Lands";//title of the notebook
-    var system = require('system');
-    var currentFile = require('system').args[4];
-    var curFilePath = fs.absolute(currentFile);
-    var curFilePath = curFilePath.replace(currentFile, '');
-    fileName1 = curFilePath + fileName1;
-
     //Notebook paths to check for sharable links
     var Notebook_R = 'http://127.0.0.1:8080/notebook.R/564af357b532422620a6';
     var Mini = "http://127.0.0.1:8080/mini.html?notebook=f03ca14c9963e5718527";
     var Shiny = "http://127.0.0.1:8080/shiny.html?notebook=15a6054f8afd195302ef";
     var View = "http://127.0.0.1:8080/view.html?notebook=638ccc3aaeb391cc9888";
     var content = '"Welcome to RCloud"';
-    var URL, url, NB_ID, URL1, fetchTitle;
+    var URL, url, NB_ID, URL1, url2, flex_dash;
 
     casper.start(rcloud_url, function () {
         functions.inject_jquery(casper);
@@ -40,29 +32,46 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     casper.viewport(1024, 768).then(function () {
         test.comment('⌚️  Logging in to RCloud using GitHub credentials...');
         functions.login(casper, github_username, github_password, rcloud_url);
+        this.capture("./Images/RCLOUD_PAGE.png");
     });
 
-    casper.then(function () {
+    casper.wait(4000).then(function () {
         casper.echo('⌚️  Validating page for the RCloud page with Shareable link icon and cell trash icon...');
+        this.capture("./Images/RCLOUD_PAGE.png");
         functions.validation(casper);
-        this.capture("./Images/capture.png");
+        this.wait(15000);
+        this.thenOpen('http://127.0.0.1:8080/edit.html?notebook=564af357b532422620a6');
+        this.wait(5000);
+        this.capture("./Images/BeforeNotebookCreation.png");
     });
 
-    //creating new notebok
+    casper.then(function (){
+        this.reload();
+        this.wait(10000);
+    });
+
+    // creating new notebok
     casper.then(function () {
         test.comment('⌚️  Creating New Notebook...');
         functions.create_notebook(casper);
         console.log("Verified that new notebook can be created");
+        this.wait(15000);
+        this.capture("./Images/AfterNotebookCreation.png");
     });
 
     casper.then(function () {
         test.comment('⌚️  Creating new cell and adding contents to the cell...');
         this.wait(3000);
         functions.addnewcell(casper);
+        this.wait(5000);
+        var session_err = this.fetchText("#session-info-panel");
+        console.log(colorizer.colorize("SESSION DIV PRODUCED ERROR ", "RED_BAR"));
+        console.log("Session div error ---> " + session_err);
     });
 
-    casper.wait(2000).then(function () {
+    casper.wait(4000).then(function () {
         functions.addcontentstocell(casper, content);
+        this.capture("./Images/CheckForCell.png");
     });
 
     //Saving the notebook details
@@ -128,11 +137,12 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
     // Notebook reload
     casper.then(function () {
         this.then(function () {
-            var url2 = this.getCurrentUrl();
+            url2 = this.getCurrentUrl();
             this.thenOpen(url2);
             this.wait(8000);
         });
     });
+
 
     functions.open_advanceddiv(casper);
 
@@ -275,88 +285,6 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         });
     });
 
-    //Importing Rmarkdown file from the system
-    casper.then(function () {
-        this.thenOpen(URL);
-        this.wait(5000);
-        casper.wait(3000).then(function () {
-
-            //Opening advanced dropdown option
-            casper.then(function () {
-                functions.open_advanceddiv(casper);
-                if (this.assertVisible("#rmdImport")) {
-                    console.log("Import Rmarkdown file option is prsesent");
-                    this.click("#rmdImport");
-                    console.log("Clicking on import Rmarkdown file option form the dropdown");
-                    this.wait(5000);
-
-                    if (this.assertVisible("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1)")) {
-
-                        //Selecting desired file from the directory
-                        casper.then(function () {
-                            this.wait(5000);
-                            this.capture("./Images/import_Rmd_File.png");
-                            this.evaluate(function (fileName1) {
-                                __utils__.findOne('input[id="notebook-file-upload"]').setAttribute('value', fileName1)
-                            }, {fileName1: fileName1});
-                            this.page.uploadFile('input[id="notebook-file-upload"]', fileName1);
-                            console.log('Selecting a file');
-                        });
-
-                        casper.wait(2000).then(function () {
-                            this.capture("./Images/import_Rmd_File1.png");
-                            // this.click("#import-notebook-file-dialog > div:nth-child(1) > div:nth-child(1) > div:nth-child(3) > span:nth-child(2)");
-                            casper.click(x('//*[text()="Import"]'));
-                            console.log("Clicking on import button")
-                            this.wait(3000);
-                        });
-                        casper.then(function () {
-                            this.thenOpen(URL);
-                            this.wait(8000);
-                        });
-
-                        casper.then(function () {
-                            flag = 0;//to check if notebook has been found
-                            var counter = 0;//counts the number of notebooks
-                            do
-                            {
-                                counter = counter + 1;
-
-                            } while (this.visible("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + counter + ") > div:nth-child(1) > span:nth-child(1)"));
-                            counter = counter + 1;
-                            for (v = 1; v <= counter; v++) {
-                                this.wait(2000);
-                                fetchTitle = this.fetchText("ul.jqtree_common:nth-child(1) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(1) > ul:nth-child(2) > li:nth-child(" + v + ") > div:nth-child(1) > span:nth-child(1)");
-                                if (fetchTitle == title) {
-                                    flag = 1;
-                                    break;
-                                }
-                            }//for closes
-                            this.test.assertEquals(flag, 1, "Located the imported Rmarkdown notebook");
-                        });
-
-                        casper.then(function () {
-                            if (flag == 1) {
-                                this.test.assertEquals(flag, 1, "Import Notebook from File, Notebook with title " + title + " is PRESENT under Notebooks tree");
-                            }
-                            else {
-                                this.test.assertEquals(flag, 0, "Import Notebook from File, Notebook with title " + title + " is ABSENT under Notebooks tree");
-                            }
-                        });
-
-                    }
-                    else {
-                        console.log("Modal window is not opening")
-                    }
-                }
-                else {
-                    console.log("Import Rmarkdown file option is not visible");
-                }
-            });
-            casper.wait(5000);
-        });
-    });
-
     //Checking for Fork feature
     casper.then(function () {
         test.comment('⌚️  Verifying for Fork feature ...');
@@ -389,6 +317,49 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             }, function () {
                 console.log("View.html page could not be loaded");
             }, 60000);
+        });
+
+        casper.viewport(1366, 768).then(function () {
+            this.thenOpen("http://127.0.0.1:8080/edit.html?notebook=acd1573cdf5e6b842364bd86e47b3d6c");
+            this.wait(8000);
+
+            test.comment('⌚️  Opening Notebook Flexdashboard.html ...');
+
+            this.waitForSelector("span.dropdown", function () {
+                console.log("choosing flexdashboard from the dropdown");
+                this.click("span.dropdown");
+                this.wait(2000);
+                this.capture("./Images/Check for Flexdashboard.png");
+                console.log("opening dropdown menu");
+                if (this.test.assertSelectorHasText("#view-type", "flexdashboard.html")) {
+                    this.click("#view-type > li:nth-child(2) > a:nth-child(1)");
+                    this.wait(2000);
+                    if (this.click("#share-link > i:nth-child(1)")) {
+                        this.wait(8000);
+                        this.viewport(1366, 768).withPopup(/flexdashboard.html/, function () {
+                            this.wait(20000);
+                            flex_dash = this.getCurrentUrl();
+                            console.log(flex_dash);
+                            casper.wait(20000).then(function () {
+                                this.page.switchToChildFrame(0);
+                                casper.withFrame(0, function () {
+                                    this.test.assertExists(".navbar-brand", "Navigation bar exists in Flexdashboard");
+                                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)", "Plot has been generated")
+                                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                                });
+                                this.page.switchToParentFrame();
+                            });
+                        });
+                    }//if close
+                    else {
+                        console.log("Maa chudao");
+                    }//else close
+                }//if close
+                else {
+                    console.log(colorizer.colorize("Flexdashboard isn't available. Please install the dependencies related to it ", "WARN_BAR"));
+                    // console.log("");
+                }
+            });
         });
     });
 
@@ -509,7 +480,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             console.log("Clicking on notebook info");
         });
 
-        this.wait(5000).then(function () {
+        this.wait(8000).then(function () {
             status = this.fetchText('.group-link > a:nth-child(1)');
             console.log("notebook is " + status);
             this.test.assertEquals(status, 'private', "The notebook has been converted to private successfully");
@@ -544,6 +515,7 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
             this.wait(5000);
         });
     });
+
 
     // loging out of RCloud
     casper.viewport(1366, 768).then(function () {
@@ -601,7 +573,45 @@ casper.test.begin("Smoke Test case which covers basic features", 29, function su
         });
     });
 
+    casper.viewport(1024, 768).then(function () {
+        test.comment("Opening Flexdashboard.html noteook as anonymous user");
+        casper.page = casper.newPage();
+        casper.viewport(1024, 768).open(flex_dash).then(function () {
+            this.wait(28000);
+            casper.wait(20000).then(function () {
+                console.log(this.getCurrentUrl());
+                this.wait(28000);
+                this.page.switchToChildFrame(0);
+                casper.withFrame(0, function () {
+                    this.test.assertExists(".navbar-brand", "Navigation bar exists");
+                    this.test.assertSelectorHasText("#lung-deaths-all > div:nth-child(1)", "Lung Deaths (All)")
+                    this.test.assertVisible("#lung-deaths-all > div:nth-child(2)", "desired element is visble")
+                });
+                this.page.switchToParentFrame();
+            });
+        });
+    });
+
     casper.run(function () {
         test.done();
     });
 });
+
+//     // Registering to the page.errors actually not required but still if there are some errors found on the page it will gives us the details
+//     casper.on("page.error", function(msg, trace) {
+//       this.echo("Error:    " + msg, "ERROR");
+//       this.echo("file:     " + trace[0].file, "WARNING");
+//       this.echo("line:     " + trace[0].line, "WARNING");
+//       this.echo("function: " + trace[0]["function"], "WARNING");
+//       errors.push(msg);
+//     });
+    
+//     casper.run(function() {
+//       if (errors.length > 0) {
+//         this.echo(errors.length + ' Javascript errors found', "WARNING");
+//       } else {
+//         this.echo(errors.length + ' Javascript errors found', "INFO");
+//       }
+//       test.done();
+//     });
+// });
