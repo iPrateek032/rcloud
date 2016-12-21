@@ -14,13 +14,14 @@ Rscript -e 'install.packages("rcloud.dcplot", repos="http://rforge.net")'
 Rscript -e 'install.packages("rpython2", repos="http://rforge.net")'
 Rscript -e 'install.packages("xml2", repos=c("http://RForge.net", "http://R.research.att.com"), type="source")'
 Rscript -e 'install.packages("drat", repos="https://cran.rstudio.com")'
-Rscript -e 'install.packages("devtools", repos="http://rforge.net")'
+Rscript -e 'install.packages("devtools", repos="http://RForge.net")'
 Rscript -e 'devtools::install_github("att/rcloud.rmd")'
 Rscript -e 'devtools::install_github("att/rcloud.shiny")'
-Rscript -e 'devtools::install_github("rcloud.htmlwidgets")'
+Rscript -e 'devtools::install_github("att/rcloud.htmlwidgets")'
 
 cd /home/travis/build/iPrateek032/rcloud/tests
 Rscript -e R_dependencies.R
+#sudo apt-get install xvfb
 pwd
 echo "Executing testscripts from $1"
 sudo xvfb-run -a casperjs test --ssl-protocol=any --engine=slimerjs $1 --username=iPrateek032 --password=musigma12 --url=http://127.0.0.1:8080/login.R --xunit=Reports/report.xml
